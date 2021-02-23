@@ -2,11 +2,17 @@
 title: "Testing Linear Models"
 author: "Gerson Guilhem"
 date: "2/21/2021"
-output: 
+output:
   ioslides_presentation:
-    widescreen: true
-    incremental: false
-    smaller: true
+    widescreen: yes
+    incremental: no
+    smaller: yes
+  slidy_presentation:
+    incremental: no
+  beamer_presentation:
+    incremental: no
+  powerpoint_presentation:
+    reference_doc: my-styles.pptx
 ---
 
 ```{r setup, include=FALSE}
@@ -43,7 +49,7 @@ ggplot(mtcars, aes(x = disp, y = mpg)) +
 * You can upload your own csv file and select which columns you want to compare. If you have no dataset to upload at the moment, you can select one of the two preset datasets to see how the app works.
 
 ## Main Features
-<h4> Plot of all Linear Models simultaneously and summary of all Models Performance </h4><br>
+<h4> You can see a plot of all the supported Linear Models simultaneously and also a summary of their performance, each in a specific tab. </h4><br>
 
 <div class="columns-2">
 
@@ -81,3 +87,5 @@ Simple Linear Model  `r RMSE.1`               `r R2.1`
 Quadratic Model      `r RMSE.2`               `r R2.2`
 Cubic Model          `r RMSE.3`               `r R2.3`
 
+<br><br>
+Want to see this in action? Try out the app [here](https://gersonguilhem.shinyapps.io/Testing_Linear_Models/).

@@ -1,0 +1,83 @@
+---
+title: "Testing Linear Models"
+author: "Gerson Guilhem"
+date: "2/21/2021"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    incremental: false
+    smaller: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## What best describes this relationship? {.flexbox}
+
+<div class="columns-2">
+```{r mtcars_plot, fig.width=5}
+
+library(ggplot2)
+
+ggplot(mtcars, aes(x = disp, y = mpg)) +
+  geom_point(size = 3) +
+  labs(title = "Miles per Gallon vs Displacement", subtitle = "MTCARS dataset")
+
+```
+
+- A simple linear model?
+- A quadratic model?
+- Does a cubic model have significant better RMSE or R² than the previous models?
+- How can one check this quickly?
+
+</div>
+
+## Testing Linear Models App
+
+* Sometimes we want to quickly estimate if two data points have a linear, quadractic or even a cubic relationship. 
+* Other times we want to even check if any of these three models fit our two variables well.\
+
+* With the *Testing Linear Models App*, checking this becomes very easy and quick.
+
+* You can upload your own csv file and select which columns you want to compare. If you have no dataset to upload at the moment, you can select one of the two preset datasets to see how the app works.
+
+## Main Features
+<h4> Plot of all Linear Models simultaneously and summary of all Models Performance </h4><br>
+
+<div class="columns-2">
+
+```{r plot_x_y, fig.width=5, warning=FALSE, message=FALSE}
+
+library(caret)
+
+simple_linear_model <- lm(mpg ~ disp, data = mtcars)
+quadratic_model <- lm(mpg ~ poly(disp, 2, raw = TRUE), data = mtcars)
+cubic_model <- lm(mpg ~ poly(disp, 3, raw = TRUE), data = mtcars)
+
+RMSE.1 = format(round(RMSE(predict(simple_linear_model), mtcars$mpg), 2), nsmall = 2)
+RMSE.2 = format(round(RMSE(predict(quadratic_model), mtcars$mpg), 2), nsmall = 2)
+RMSE.3 = format(round(RMSE(predict(cubic_model), mtcars$mpg), 2), nsmall = 2)
+
+R2.1 = format(round(R2(predict(simple_linear_model), mtcars$mpg), 2), nsmall = 2)
+R2.2 = format(round(R2(predict(quadratic_model), mtcars$mpg), 2), nsmall = 2)
+R2.3 = format(round(R2(predict(cubic_model), mtcars$mpg), 2), nsmall = 2)
+
+ggplot(mtcars, aes(x = disp, y = mpg)) + 
+  geom_point() + 
+  stat_smooth(method = "lm", formula = y~x, color = "blue", se = FALSE) +
+  stat_smooth(method = "lm", formula = y~poly(x, 2), color = "red", se = FALSE) +
+  stat_smooth(method = "lm", formula = y~poly(x, 3), color = "orange", se = FALSE)
+
+```
+
+- All 3 models can be visualized at once
+- Show/Hide each model fitted line individually
+- Check the model performance in a separate tab:
+
+Model                RMSE             R2     
+----------------     ----------       ---
+Simple Linear Model  `r RMSE.1`               `r R2.1`    
+Quadratic Model      `r RMSE.2`               `r R2.2`
+Cubic Model          `r RMSE.3`               `r R2.3`
+
